@@ -11,9 +11,26 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 0) do
+ActiveRecord::Schema.define(version: 20160327234151) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "photos", force: :cascade do |t|
+    t.string   "title"
+    t.text     "description"
+    t.text     "url_thumb"
+    t.text     "url_small"
+    t.text     "url_medium"
+    t.text     "url_large"
+    t.text     "url_original"
+    t.string   "external_service_id"
+    t.string   "external_service_name"
+    t.datetime "external_date"
+  end
+
+  add_index "photos", ["external_date"], name: "index_photos_on_external_date", using: :btree
+  add_index "photos", ["external_service_id"], name: "index_photos_on_external_service_id", using: :btree
+  add_index "photos", ["external_service_name"], name: "index_photos_on_external_service_name", using: :btree
 
 end
