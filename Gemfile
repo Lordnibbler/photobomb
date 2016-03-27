@@ -19,6 +19,7 @@ gem 'flickraw', '~> 0.9.8'
 
 group :development, :test do
   gem 'byebug'
+  gem 'dotenv-rails', '~> 2.1.0'
   gem 'rspec-rails', '~> 3.5.0.beta2'
 end
 
