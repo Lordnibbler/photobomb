@@ -18,8 +18,9 @@ gem 'puma'
 gem 'flickraw', '~> 0.9.8'
 
 group :development, :test do
-  gem 'byebug'
   gem 'dotenv-rails', '~> 2.1.0'
+  gem 'pry-rails', '~> 0.3.4'
+  gem 'pry-byebug'
   gem 'rspec-rails', '~> 3.5.0.beta2'
 end
 
