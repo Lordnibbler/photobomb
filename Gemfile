@@ -20,6 +20,7 @@ gem 'flickraw', '~> 0.9.8'
 group :development, :test do
   gem 'dotenv-rails', '~> 2.1.0'
   gem 'factory_girl_rails', '~> 4.6.0'
+  gem 'faker', '~> 1.6.3'
   gem 'pry-rails', '~> 0.3.4'
   gem 'pry-byebug'
   gem 'rspec-rails', '~> 3.5.0.beta2'
