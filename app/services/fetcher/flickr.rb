@@ -6,6 +6,7 @@ module Fetcher
     PHOTOSET_ID = 72157647560300303
     EXTERNAL_SERVICE_NAME = 'flickr'.freeze
     DEFAULT_EXTRAS = 'date_upload,media,url_t,url_s,url_m,url_o'.freeze
+    PER_PAGE = 100
 
     def initialize
       authenticate
@@ -41,10 +42,10 @@ module Fetcher
     # once we fetch all photos, iterate through and invoke PhotoCreator with them
     def fetch_and_update
       fetch_all_newer_photos
-      # fetch_individual_photos # dont have to do this if we pass more `extras` options
       create_photos
     end
 
+    # @todo refactor me!
     def fetch_all_newer_photos(page = 1)
       response = get_photos(page: page)
       photos = response['photo']
@@ -55,7 +56,9 @@ module Fetcher
       new_photos << photos
       new_photos.flatten!
 
-      if newest_photo.external_date < oldest_external_photo_date
+      return if response.page.to_i == response.pages
+
+      if newest_photo_external_date < oldest_external_photo_date
         fetch_all_newer_photos(page + 1)
       end
     end
@@ -65,10 +68,14 @@ module Fetcher
     end
 
     def newest_photo
-      @newest_photo ||= Photo.newest_from_external_service(EXTERNAL_SERVICE_NAME)
+      Photo.newest_from_external_service(EXTERNAL_SERVICE_NAME)
     end
 
-    def get_photos(user_id: USER_ID, photoset_id: PHOTOSET_ID, per_page: 100, page: 1, extras: DEFAULT_EXTRAS)
+    def newest_photo_external_date
+      newest_photo&.external_date || 10.years.ago
+    end
+
+    def get_photos(user_id: USER_ID, photoset_id: PHOTOSET_ID, per_page: PER_PAGE, page: 1, extras: DEFAULT_EXTRAS)
       photosets.getPhotos(
         user_id: user_id,
         photoset_id: photoset_id,
