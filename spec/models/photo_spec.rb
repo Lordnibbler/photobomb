@@ -55,4 +55,13 @@ describe Photo do
       end
     end
   end
+
+  describe '.newest' do
+    let!(:old_photo) { FG.create(:photo, external_date: 2.days.ago) }
+    let!(:new_photo) { FG.create(:photo, external_date: 1.hour.ago) }
+
+    it 'returns the newest photo' do
+      expect(described_class.newest).to eq(new_photo)
+    end
+  end
 end
